@@ -1,0 +1,83 @@
+<md-content>
+    <div class='md-padding' layout="row" layout-wrap>
+        <div flex="100" ng-show="lists.length==0">
+            <md-text-float style="text-align: center">
+                <h1 class="md-display-2" style="color:#cfcfcf">You don't have any lists yet.</h1>
+            </md-text-float>
+        </div>
+        <md-card style="width: 300px" ng-repeat="list in lists | orderBy:'_id' track by list._id "
+                 ng-class="{'panel-danger': (list.priority == 3),'panel-warning': (list.priority == 2),'panel-success': (list.priority == 0),'panel-primary': (list.priority == 1)}">
+            <md-card-title flex="none" class="card-title md-whiteframe-1dp">
+                <md-card-title-text>
+                    <span class="md-headline">{{list.title}}</span>
+                </md-card-title-text>
+                <md-menu md-position-mode="target-right target">
+                    <md-button aria-label="Open demo menu" class="md-icon-button"
+                               ng-click="$mdOpenMenu($event)">
+                        <md-icon md-menu-origin md-svg-icon="assets/img/icons/ic_more_horiz_black_24px.svg"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="editListDialog(list)">
+                                <span md-menu-align-target>Edit</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="removeList(list._id)">
+                                <span md-menu-align-target>Remove</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-title>
+
+            <md-card-content class="drop-area sortable" as-sortable="kanbanSortOptions" data-ng-model="list.cards"
+                             flex="auto">
+                <!--ng-click="removeCard(list._id,card._id)"-->
+                <md-card class="card"
+                         ng-click="showCard($event,card)" as-sortable-item
+                         ng-repeat="card in list.cards">
+                    <md-card-content as-sortable-item-handle>
+                        <p>{{card.title}}</p>
+                        <div layout="row" layout-wrap>
+                            <div style="text-align: left" flex="50">
+                                <span ng-show="card.getCompletion()==100">    <md-icon
+                                        md-svg-src="assets/img/icons/ic_check_circle_black_24px.svg"></md-icon>
+                                </span>
+                                {{(card.tasks.length)? card.getCompleted() + "/" +card.tasks.length:""}}
+                            </div>
+                            <div style="text-align: right" flex="50">
+                                {{card.due |date:'MMM d' }}
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <md-card class="card" ng-hide="!list.addNewCard">
+                    <md-card-content>
+                        <md-input-container class="md-block">
+                            <label>New Card</label>
+                            <input ng-model="newCard"
+                                   md-select-on-focus/>
+                        </md-input-container>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                        <md-button ng-click="addCard(list._id,newCard);list.addNewCard=false;newCard=null;"
+                                   class="md-primary">Add
+                        </md-button>
+                        <md-button ng-click="list.addNewCard = false" class="md-primary">Cancel</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-card-content>
+            <md-card-actions ng-hide="addNewCard">
+                <div layout="column">
+                    <md-button ng-click="list.addNewCard = true" class="md-raised">Add card</md-button>
+                </div>
+            </md-card-actions>
+        </md-card>
+    </div>
+</md-content>
+
+<md-button ng-click="newList($event,boardId)" md-whiteframe="18" class="md-fab md-primary fix-button md-raised"
+           aria-label="Add List">
+    <md-icon md-svg-src="assets/img/icons/ic_add_white_24px.svg"></md-icon>
+</md-button>

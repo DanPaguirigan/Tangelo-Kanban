@@ -1,0 +1,56 @@
+<md-content>
+    <div class='md-padding' layout="row" layout-wrap>
+        <div flex="100" ng-show="boards.length==0">
+            <md-text-float style="text-align: center">
+                <h1 class="md-display-2" style="color:#cfcfcf">You don't have any boards yet.</h1>
+            </md-text-float>
+        </div>
+        <md-card style="width: 300px" ng-repeat="board in boards | orderBy:'_id' track by board._id ">
+            <md-card-title flex="none" class="card-title md-whiteframe-1dp">
+                <md-card-title-text ui-sref="lists({boardId: board._id})">
+                    <span class="md-headline">{{board.title}}</span>
+                </md-card-title-text>
+                <md-menu md-position-mode="target-right target">
+                    <md-button aria-label="Open demo menu" class="md-icon-button"
+                               ng-click="$mdOpenMenu($event)">
+                        <md-icon md-menu-origin md-svg-icon="assets/img/icons/ic_more_horiz_black_24px.svg"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="manageMembers(board._id)">
+                                <span md-menu-align-target>Manage members</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="renameBoardDialog(board)">
+                                <span md-menu-align-target>Edit</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="leaveBoard(board._id)">
+                                <span md-menu-align-target>Leave</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="deleteBoard(board._id)">
+                                <span md-menu-align-target>Remove</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-title>
+
+            <md-card-content>
+                <div class="md-padding">
+                    <div class="md-subhead">Owner: <b>{{board._owner.username}}</b></div>
+                    <div class="md-subhead">Members : {{board._members.length}}</div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</md-content>
+
+<md-button ng-click="addBoardDialog($event)" md-whiteframe="18" class="md-fab md-primary fix-button md-raised"
+           aria-label="Add List">
+    <md-icon md-svg-src="assets/img/icons/ic_add_white_24px.svg"></md-icon>
+</md-button>

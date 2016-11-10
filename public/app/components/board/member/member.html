@@ -1,0 +1,60 @@
+<md-dialog aria-label="Autocomplete Dialog Example">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Manage members</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+                <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content ng-cloak>
+
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Add">
+                <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content>
+                            <form ng-submit="$event.preventDefault()">
+
+                                <md-input-container flex="100">
+                                    <label>Username</label>
+                                    <input required name="listName" ng-model="username">
+                                    <div ng-messages="listName.$error">
+                                        <div ng-message="required">This is required.</div>
+                                    </div>
+                                </md-input-container>
+                            </form>
+                        </md-card-content>
+                        <md-card-actions>
+                            <md-button class="md-primary" aria-label="Finished" ng-click="ctrl.finish($event)">Add
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
+                </md-content>
+            </md-tab>
+            <md-tab label="Remove">
+                <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content>
+                            <md-list>
+                                <md-list-item ng-repeat="member in members">
+                                    {{member.firstName}} {{member.lastName}} ({{member.username}})
+                                    <span flex></span>
+                                    <md-button class="md-icon-button" ng-click="removeMember(member._id)">
+                                        <md-icon class="black-svg"
+                                                 md-svg-src="assets/img/icons/ic_close_white_24px.svg"
+                                                 aria-label="Remove task"></md-icon>
+                                    </md-button>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </md-card-content>
+                    </md-card>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-dialog-content>
+
+</md-dialog>

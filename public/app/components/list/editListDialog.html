@@ -1,0 +1,40 @@
+<md-dialog aria-label="Autocomplete Dialog Example">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Edit list</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="ctrl.cancel()">
+                <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content ng-cloak>
+        <div class="md-dialog-content">
+            <form ng-submit="$event.preventDefault()">
+
+                <md-input-container flex="100">
+                    <label>Name</label>
+                    <input required name="listName" ng-model="title">
+                    <div ng-messages="listName.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-group >
+                    <p>Priority</p>
+                    <md-radio-group ng-model="priority" class="md-primary">
+                        <md-radio-button value="3" class="md-primary">High</md-radio-button>
+                        <md-radio-button value="2"> Medium</md-radio-button>
+                        <md-radio-button value="1">Normal</md-radio-button>
+                        <md-radio-button value="0">Low</md-radio-button>
+                    </md-radio-group>
+                </md-input-group>
+            </form>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <md-button class="md-primary" aria-label="Finished" ng-click="ctrl.finish($event)">Modify</md-button>
+    </md-dialog-actions>
+</md-dialog>

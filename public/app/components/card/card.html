@@ -1,0 +1,125 @@
+<md-dialog aria-label="Edit card">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Edit Card - {{card.title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content ng-cloak>
+
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Details">
+                    <md-content class="md-padding">
+                        <md-card>
+                            <md-card-content>
+
+                                <h2>
+                                    <md-input-container class="md-block">
+                                        <label>Title</label>
+                                        <input ng-model="card.title"
+                                               md-select-on-focus/>
+                                    </md-input-container>
+                                </h2>
+                                <style>
+                                    .md-inline-form md-datepicker {
+                                        margin-top: 15px;
+                                    }
+                                </style>
+                                <md-input-group layout="row" class="md-inline-form">
+                                    <md-input-container>
+                                        <label>Assigned To</label>
+                                        <md-select ng-model="card._assignee" ng-model-options="{trackBy: '$value._id'}">
+                                            <md-option ng-value="null"><em>No one</em></md-option>
+                                            <md-option ng-repeat="member in members" ng-value="member">
+                                                {{member.username}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <span flex></span>
+                                    <md-datepicker ng-model="card.due" md-placeholder="Due Date"></md-datepicker>
+                                </md-input-group>
+                                <md-input-container class="md-block">
+                                    <label>Description</label>
+                    <textarea rows="5" ng-model="card.description"
+                              md-select-on-focus></textarea>
+                                </md-input-container>
+                                <div layout="row" class="md-padding">
+                                    <label flex="25">Tasks </label>
+                                    <span flex="15">{{card.getCompletion()}}%</span>
+                                    <span flex></span>
+                                    <md-progress-linear flex=50 md-mode="determinate"
+                                                        value="{{card.getCompletion()}}"></md-progress-linear>
+                                </div>
+                                <md-input-group flex="100" class="md-padding" layout="column">
+                                    <md-input-group ng-repeat="task in card.tasks track by $index">
+                                        <md-checkbox ng-model="task.completed" aria-label=" {{task.name}}">
+                                            {{task.name}}
+                                        </md-checkbox>
+                                        <md-button class="md-icon-button" ng-click="removeTask($index)">
+                                            <md-icon class="black-svg"
+                                                     md-svg-src="assets/img/icons/ic_close_white_24px.svg"
+                                                     aria-label="Remove task"></md-icon>
+                                        </md-button>
+                                    </md-input-group>
+                                    <md-input-container>
+                                        <label>New Task</label>
+                                        <input ng-model="newTask"/>
+                                    </md-input-container>
+                                    <md-button class="md-primary" ng-click="addTask()"> Add</md-button>
+                                </md-input-group>
+                            </md-card-content>
+                        </md-card>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Comments">
+                    <md-content class="md-padding">
+                        <md-card>
+                            <md-card-content>
+                                <h2>Comments</h2>
+                                <md-list>
+                                    <md-item ng-repeat="item in comments">
+                                        <md-item-content>
+                                            <div class="md-tile-content">
+                                                <h4>{{item._user.username}}</h4>
+                                                <p>
+                                                    {{item.comment}}
+                                                </p>
+                                            </div>
+                                        </md-item-content>
+                                        <md-divider md-inset hide-sm ng-if="!$last"></md-divider>
+                                        <md-divider hide-gt-sm ng-if="!$last"></md-divider>
+                                    </md-item>
+                                    <md-divider></md-divider>
+                                    <md-input-group flex="100" class="md-padding" layout="column">
+                                        <md-input-container flex="100">
+                                            <label>Comment</label>
+                                            <input ng-model="newComment"/>
+                                        </md-input-container>
+                                        <md-button class="md-primary" ng-click="commentOnCard()"> Send</md-button>
+                                    </md-input-group>
+                                </md-list>
+                            </md-card-content>
+                        </md-card>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+
+        </md-dialog-content>
+        <md-dialog-actions class="md-whiteframe-2dp0" layout="row">
+            <md-button ng-click="remove(card._id)" class="md-warn md-raised">
+                Remove
+            </md-button>
+            <span flex></span>
+            <md-button class="md-primary md-raised" ng-click="edit(card._id,card)">
+                Save
+            </md-button>
+            <md-button class="md-raised" ng-click="cancel()" style="margin-right:20px;">
+                Cancel
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

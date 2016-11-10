@@ -1,0 +1,9 @@
+{
+  "db": {
+    "uri": "mongodb://127.0.0.1:27017/kanban",
+    "username": "",
+    "password": ""
+  },
+  "jwtSecret": "N07MUc8of453cR37"
+}
+
